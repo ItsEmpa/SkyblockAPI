@@ -174,14 +174,15 @@ object ProfileAPI {
     }
 }
 
-enum class ProfileType {
+enum class ProfileType(apiName: String? = null) {
     NORMAL,
     BINGO,
     IRONMAN,
-    STRANDED,
+    STRANDED("ISLAND"),
     UNKNOWN,
     ;
 
+    val apiName: String = apiName ?: name
     private val string = toFormattedName()
 
     override fun toString(): String = string

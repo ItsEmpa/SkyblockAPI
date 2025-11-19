@@ -15,6 +15,9 @@ class EnumCodec<T> private constructor(private val codec: Codec<T>) : Codec<T> {
         fun <T : Enum<T>> of(constants: Array<T>): EnumCodec<T> =
             EnumCodec(Codec.withAlternative(constantCodec(constants), intCodec(constants)))
 
+        fun <T : Enum<T>> of(constants: Array<T>, getter: (T) -> String): EnumCodec<T> =
+            EnumCodec(Codec.withAlternative(constantCodec(constants, getter), intCodec(constants)))
+
         internal fun <T> forKCodec(constants: Array<T>): EnumCodec<T> =
             EnumCodec(Codec.withAlternative(constantCodec(constants), intCodec(constants)))
 
@@ -30,15 +33,15 @@ class EnumCodec<T> private constructor(private val codec: Codec<T>) : Codec<T> {
             )
         }
 
-        private fun <T> constantCodec(constants: Array<T>): Codec<T> = Codec.STRING.flatXmap(
+        private fun <T> constantCodec(constants: Array<T>, getter: (T) -> String = { (it as Enum<*>).name }): Codec<T> = Codec.STRING.flatXmap(
             { name: String ->
                 runCatching {
-                    DataResult.success(constants.first { (it as Enum<*>).name.equals(name, true) })
+                    DataResult.success(constants.first { getter(it).equals(name, true) })
                 }.getOrElse {
                     DataResult.error { "Unknown enum name: $name" }
                 }
             },
-            { value: T -> DataResult.success((value as Enum<*>).name) },
+            { value: T -> DataResult.success(getter(value)) },
         )
     }
 

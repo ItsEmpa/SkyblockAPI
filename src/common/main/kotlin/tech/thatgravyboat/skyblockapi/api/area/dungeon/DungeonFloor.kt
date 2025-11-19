@@ -29,6 +29,9 @@ enum class DungeonFloor(
 
     constructor(bossName: String, floorNumber: Int, longName: String) : this(bossName, bossName, floorNumber, longName)
 
+    val isMasterMode: Boolean = name.first() == 'M'
+    val dungeonType = if (isMasterMode) DungeonType.MASTER_CATACOMBS else DungeonType.CATACOMBS
+
     companion object {
         fun getByName(name: String) = valueOfOrNull<DungeonFloor>(name.uppercase())
         fun getByLongName(name: String) = DungeonFloor.entries.firstOrNull { it.longName == name }

@@ -20,8 +20,6 @@ jobs:
 
         steps:
             -   uses: actions/checkout@v5
-                with:
-                    token: ${{ secrets.BOT_TOKEN }}
 
             -   name: Setup JDK 25
                 uses: actions/setup-java@v5
@@ -37,13 +35,11 @@ jobs:
                 run: ./gradlew build
 
             -   name: Build with Gradle
-                run: ./gradlew updateLegacyAbi || true
+                run: ./gradlew updateKotlinAbi || true
 
             -   name: Check for breaking changes
-                env:
-                    GH_TOKEN: ${{ secrets.BOT_TOKEN }}
                 run: |
-                    if ! $(git diff --exit-code versions/26.1/api/26.1.api) || ! $(git diff --exit-code versions/26.2/api/26.2.api);
+                    if ! $(git diff --exit-code versions/26.1/api/26.1.api) || ! $(git diff --exit-code versions/26.2/api/26.2.api) || ! $(git diff --exit-code versions/26.3/api/26.3.api);
                     then
                         git config --global user.email "meowtomation@users.noreply.github.com"
                         git config --global user.name "meowtomation"

@@ -32,7 +32,7 @@ jobs:
             -   run: chmod +x gradlew
 
             -   name: Update API baseline
-                run: ./gradlew updateLegacyAbi || true
+                run: ./gradlew updateKotlinAbi || true
 
             -   name: Generate API Diffs
                 run: |

@@ -2,7 +2,7 @@ name: Breaking Changes Checker
 
 on:
     pull_request_target:
-        branches: [ "4.0" ]
+        branches: [ "1.*" ]
 
 permissions:
     contents: read

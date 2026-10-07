@@ -65,6 +65,9 @@ data object MaxwellAPI : ItemDebugCategory {
     val tuningTemplates: Collection<MaxwellTuningTemplate>
         get() = MaxwellStorage.tuningTemplates
 
+    val meow: Int
+        get() = 3
+
     //region Regex
     private val chatGroup = RegexGroup.CHAT.group("maxwell")
 
